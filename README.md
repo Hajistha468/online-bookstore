@@ -33,12 +33,13 @@ To get started with this project, ensure you have the following installed:
 - **Python 3.x** – Download it from [here](https://www.python.org/downloads/).
 - **pip** – Python package manager (should come with Python installation).
 
----
 
 ### Additional Notes:
 
 - **Interactive User Experience**: With intuitive navigation and smooth interactions, users can easily browse and purchase their favorite books.
 - **Admin Dashboard**: Admins have an easy-to-use interface to manage books and track orders efficiently.
+
+---
 
 ## 📄 License
 
