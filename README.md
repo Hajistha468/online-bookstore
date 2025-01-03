@@ -22,7 +22,7 @@ Welcome to the **Online Bookstore** web application! This platform allows users 
 
 - **Frontend**: HTML, CSS, JavaScript (with custom styles and interactivity)
 - **Backend**: Python (Flask framework)
-- **Database**: SQLite (for simplicity and ease of use)
+- **Database**: MongoDB (for simplicity and ease of use)
   
 ---
 
