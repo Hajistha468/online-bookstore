@@ -1,0 +1,22 @@
+/online-bookstore
+│
+├── /templates
+│   ├── index.html                
+│   ├── login.html                
+│   ├── register.html             
+│   ├── home.html                 
+│   ├── admin.html                
+│   ├── add_book.html            
+│   ├── edit_book.html            
+│   ├── book_details.html         
+│   ├── my_orders.html           
+│   ├── view_orders.html         
+│   └── order_success.html        
+│
+├── /static
+│   ├── style.css 
+│   └── logo.png              
+│
+├── app.py                         
+├── requirements.txt               
+└── README.md                      

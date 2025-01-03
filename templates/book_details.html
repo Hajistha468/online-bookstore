@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ book.title }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Basic styling */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f2f5; /* Soft gray background */
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .book-details {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+            max-width: 800px;
+        }
+
+        .book-img {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .book-img img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            border: 2px solid #e0e0e0; /* Subtle border */
+        }
+
+        .book-info {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .order-button {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #007bff; /* Blue button */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            margin-top: 20px;
+            position: relative;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-size: 1.1em;
+        }
+
+        .order-button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            transform: translateY(-2px);
+        }
+
+        .back-to-home {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .back-to-home a {
+            color: #007bff;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .back-to-home a:hover {
+            text-decoration: underline;
+        }
+
+        /* Styled headings for descriptions */
+        h2 {
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
+            color: #007bff;
+            margin-top: 20px; /* Space above headings */
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .book-details {
+                padding: 20px;
+            }
+
+            .order-button {
+                padding: 10px 20px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ book.title }}</h1>
+    <div class="book-img">
+        <img src="{{ book.thumbnailUrl }}" alt="{{ book.title }}">
+    </div>
+    <div class="book-details">
+        <div class="book-info">
+            <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+            <p><strong>Page Count:</strong> {{ page_count }}</p>
+            <p><strong>Published Date:</strong> {{ published_date.strftime('%Y-%m-%d') if published_date != 'N/A' else 'N/A' }}</p>
+            <p><strong>Price:</strong> Rs.{{ price }}</p>
+            <h2>Short Description</h2>
+            <p>{{ book.shortDescription or "No description available" }}</p>
+            <h2>Long Description</h2>
+            <p>{{ book.longDescription }}</p>
+            <h2>Authors</h2>
+            <p>{{ book.authors | join(', ') if book.authors else "Unknown" }}</p>
+            <h2>Categories</h2>
+            <p>{{ ', '.join(book.categories) }}</p>
+        </div>
+
+        <!-- Add to Cart Button -->
+        <div class="back-to-home">
+            <a href="{{ url_for('index') }}">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+        
+        <!-- Only show button if user is authenticated -->
+        {% if current_user.is_authenticated %}
+            <button class="order-button" onclick="addToCart('{{ book.isbn }}')">Add to Cart</button>
+        {% endif %}
+    </div>
+
+    <script>
+        function addToCart(isbn) {
+            fetch('/add_to_cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',  // Specify that the request body is JSON
+                },
+                body: JSON.stringify({ isbn: isbn })  // Send the ISBN in the request body
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert(data.message);  // Show success message
+                } else {
+                    alert(data.message);  // Show error message if needed
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>

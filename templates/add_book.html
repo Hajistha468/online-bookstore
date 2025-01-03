@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Book</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007bff;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .error-message {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Add a New Book</h1>
+    <form action="{{ url_for('add_book') }}" method="post">
+        <label for="title">Title:</label>
+        <input type="text" name="title" required placeholder="Enter the book title">
+        
+        <label for="isbn">ISBN:</label>
+        <input type="text" name="isbn" required placeholder="Enter the ISBN number" pattern="\d{13}" title="Please enter a valid 13-digit ISBN number">
+        
+        <label for="pageCount">Page Count:</label>
+        <input type="number" name="pageCount" required min="1" placeholder="Enter the number of pages">
+        
+        <label for="description">Description:</label>
+        <textarea name="description" rows="4" placeholder="Enter a brief description of the book"></textarea>
+        
+        <label for="thumbnailUrl">Thumbnail URL:</label>
+        <input type="text" name="thumbnailUrl" placeholder="Enter a URL for the book's thumbnail image">
+        
+        <label for="authors">Authors (comma separated):</label>
+        <input type="text" name="authors" placeholder="Enter authors, separated by commas">
+        
+        <label for="categories">Categories (comma separated):</label>
+        <input type="text" name="categories" placeholder="Enter categories, separated by commas">
+        
+        <button type="submit">Add Book</button>
+        
+        <!-- Optional: Display an error message if any validation fails -->
+        {% if error_message %}
+            <div class="error-message">{{ error_message }}</div>
+        {% endif %}
+    </form>
+    <a class="back-link" href="{{ url_for('admin_dashboard') }}">Back to Admin</a>
+</body>
+</html>

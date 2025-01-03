@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Your Cart</title>
+    <script>
+        function removeFromCart(isbn) {
+            fetch(`/remove_from_cart/${isbn}`, { 
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json' // Set the content type for the request
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    location.reload(); // Reload the page to reflect changes
+                } else {
+                    alert(data.message); // Show an error message if needed
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+<body>
+    <div class="header">
+        <h1>Your Cart</h1>
+    </div>
+
+    <div class="cart-container">
+        {% if cart_items and cart_items|length > 0 %}
+            <div class="book-list">
+                {% for item in cart_items %}
+                <div class="book-item">
+                    <img src="{{ item.thumbnailUrl }}" alt="{{ item.title }}" class="book-image">
+                    <div class="book-details">
+                        <h3 class="book-title">{{ item.title }}</h3>
+                        <p class="book-author">Author: {{ item.author }}</p>
+                        <p class="book-price">Price: Rs. {{ item.price }}</p> <!-- Display price -->
+                        <button class="remove-button" onclick="removeFromCart('{{ item.isbn }}')">Remove</button> <!-- Remove button -->
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="cart-total">
+                <h3>Total: Rs. {{ cart_items|sum(attribute='price') }}</h3> <!-- Sum total prices -->
+            </div>
+            <form action="{{ url_for('place_order') }}" method="post">
+                <button type="submit">Order</button>
+            </form>
+        {% else %}
+            <p class="empty-cart-message">Your cart is empty.</p>
+        {% endif %}
+    </div>
+
+    <div class="back-to-home">
+        <a href="{{ url_for('index') }}" style="color: #007bff;">Back to Home</a>
+    </div>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9; /* Light background for contrast */
+            color: #333; /* Dark text color */
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            text-align: center;
+            padding: 20px;
+            background-color: #007bff; /* Header background */
+            color: white;
+        }
+        .cart-container {
+            max-width: 800px; /* Set a max width */
+            margin: auto; /* Center the container */
+            padding: 20px;
+            background-color: white; /* White background for cart */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+        }
+        .book-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Space between book items */
+        }
+        .book-item {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd; /* Light border */
+            padding: 15px;
+            border-radius: 5px;
+            transition: transform 0.2s, box-shadow 0.2s; /* Smooth transition */
+        }
+        .book-item:hover {
+            transform: translateY(-2px); /* Slight lift on hover */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
+        }
+        .book-image {
+            width: 100px; /* Set image width */
+            height: auto; /* Maintain aspect ratio */
+            margin-right: 15px; /* Space between image and text */
+            border-radius: 5px; /* Rounded image corners */
+        }
+        .book-details {
+            flex-grow: 1; /* Allow the details to fill the remaining space */
+        }
+        .book-title {
+            font-size: 1.2em; /* Larger title */
+            margin: 0; /* Remove default margin */
+            color: #007bff; /* Title color */
+        }
+        .book-author, .book-price {
+            margin: 5px 0; /* Add margin for spacing */
+        }
+        .remove-button {
+            background-color: #ff4d4d; /* Red background for remove button */
+            color: white; /* White text */
+            border: none; /* No border */
+            padding: 8px 12px; /* Button padding */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: background-color 0.2s; /* Smooth color transition */
+        }
+        .remove-button:hover {
+            background-color: #ff1a1a; /* Darker red on hover */
+        }
+        .cart-total {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 1.5em; /* Larger total font */
+            text-align: right; /* Align to the right */
+        }
+        .empty-cart-message {
+            text-align: center; /* Center the message */
+            font-size: 1.2em; /* Larger font for empty cart */
+            color: #666; /* Grey color for empty cart message */
+        }
+        .back-to-home {
+            text-align: center;
+            margin-top: 20px; /* Space above the back link */
+        }
+    </style>
+</body>
+</html>

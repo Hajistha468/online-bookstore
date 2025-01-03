@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Literary Escape</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    
+    <style>
+        /* General styling */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            display: flex; /* Flex layout */
+            flex-direction: column; /* Column layout */
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Header styling */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header .nav-item {
+            font-size: 16px;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .header .nav-item i {
+            margin-right: 8px;
+        }
+
+        .header .nav-item:hover {
+            color: #0056b3;
+        }
+
+        /* Logo styling */
+        .logo {
+            height: 40px; /* Adjust the height of your logo */
+        }
+
+        /* Welcome message styling */
+        .welcome-message {
+            text-align: center;
+            background-color: #343a40; /* Match footer color */
+            color: #ffffff;
+            padding: 20px 0; /* Adjusted padding */
+            margin: 0; /* Remove margin to align with header */
+            border-radius: 8px; /* Optional: add rounded corners */
+        }
+
+        /* Main layout */
+        .main {
+            display: flex; /* Flexbox for layout */
+            margin: 20px; /* Space around main content */
+            flex: 1; /* Allow this container to take the remaining space */
+        }
+
+        /* Category filter styling */
+        .category-container {
+            margin-right: 20px; /* Space between category and books */
+            padding: 10px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 250px; /* Fixed width for categories */
+            max-height: 400px; /* Limit height for scrolling */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+        .category-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 18px; /* Adjusted font size */
+            color: #343a40;
+        }
+
+        .checkbox-item {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Books container */
+        .books-container {
+            flex: 1; /* Allow this container to take the remaining space */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start; /* Align books to the left */
+            padding: 20px;
+        }
+
+        .book-item {
+            position: relative;
+            width: 180px;
+            margin: 15px;
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: #fff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .book-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .book-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .book-title-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .book-item:hover .book-title-overlay {
+            opacity: 1;
+        }
+
+        .contact-details {
+            text-align: center;
+            padding: 20px;
+            background-color: #343a40;
+            color: #ffffff;
+            margin-top: 50px;
+            border-radius: 8px;
+        }
+
+        footer {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        /* Scrollbar styling */
+        .category-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .category-container::-webkit-scrollbar-thumb {
+            background-color: #007bff;
+            border-radius: 4px;
+        }
+
+        .category-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        .book-item {
+    position: relative;
+    width: 180px;
+    margin: 15px;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    background-size: cover; /* Cover the entire item */
+    background-position: center; /* Center the background */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.book-item img {
+    width: 100%; /* Make sure the book image fills the item */
+    height: 250px; /* Set a specific height */
+    object-fit: cover; /* Maintain aspect ratio */
+    position: relative; /* Position relative to stack over background */
+    z-index: 1; /* Ensure the book image is above the background */
+}
+
+.book-title-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    font-size: 16px;
+    font-weight: bold;
+    z-index: 2; /* Ensure the overlay is above everything else */
+}
+
+.book-item:hover .book-title-overlay {
+    opacity: 1; /* Show overlay on hover */
+}
+
+.book-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+        /* Dropdown Button */
+.user-menu {
+    position: relative;
+}
+
+.dropbtn {
+    background-color: transparent; /* Make background transparent */
+    border: none;
+    color: #007bff; /* Link color */
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Dropdown container */
+.dropdown-content {
+    display: none; /* Hidden by default */
+    position: absolute; /* Position the dropdown */
+    background-color: #ffffff; /* Background color of dropdown */
+    min-width: 160px; /* Set a minimum width */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+    z-index: 1; /* Position above other elements */
+    border-radius: 8px; /* Rounded corners */
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: #343a40; /* Text color */
+    padding: 12px 16px; /* Padding for links */
+    text-decoration: none; /* No underline */
+    display: block; /* Make links fill container */
+}
+
+/* Show the dropdown on hover */
+.dropdown:hover .dropdown-content {
+    display: block; /* Show dropdown */
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+    background-color: #f1f1f1; /* Background on hover */
+}
+
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const dropbtn = document.querySelector('.dropbtn');
+            const dropdownContent = document.querySelector('.dropdown-content');
+    
+            dropbtn.addEventListener('click', function () {
+                dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+            });
+    
+            // Close the dropdown if the user clicks outside of it
+            window.onclick = function(event) {
+                if (!event.target.matches('.dropbtn')) {
+                    dropdownContent.style.display = 'none';
+                }
+            }
+        });
+    </script>
+    
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <ul class="flashes">
+        {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    {% endwith %}
+    <!-- Header with Logo, Home and Login/User Links -->
+    <div class="header">
+        <div class="nav-item">
+            <a href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Your Bookstore Logo" class="logo">
+            </a>
+        </div>
+        
+        <nav>
+            <div class="nav-item user-menu">
+                {% if current_user.is_authenticated %}
+                    <div class="dropdown">
+                        <button class="dropbtn">
+                            <i class="fas fa-user" style="margin-right: 5px;"></i>
+                            Hello, {{ current_user.username }}!
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="{{ url_for('cart') }}">
+                                <i class="fas fa-shopping-cart" style="margin-right: 5px;"></i> Cart
+                            </a>
+                            <a href="{{ url_for('my_orders') }}">
+                                <i class="fas fa-receipt" style="margin-right: 5px;"></i> My Orders
+                            </a>
+                            {% if is_admin %}
+                                <a href="{{ url_for('admin_dashboard') }}">
+                                    <i class="fas fa-user-shield" style="margin-right: 5px;"></i> Admin Dashboard
+                                </a>
+                            {% endif %}
+                            <a href="{{ url_for('logout') }}">
+                                <i class="fas fa-sign-out-alt" style="margin-right: 5px;"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{{ url_for('login') }}">
+                        <i class="fas fa-user" style="margin-right: 5px;"></i> Login
+                    </a>
+                {% endif %}
+            </div>
+        </nav>
+    </div>
+    
+
+    <div class="welcome-message">
+        <h2>Welcome to Literary Escape</h2>
+        {% if current_user.is_authenticated %}
+            <p>Hello, {{ current_user.username }}! Thanks for visiting us.</p>
+        {% else %}
+            <p>Your one-stop destination for amazing books!</p>
+        {% endif %}
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main">
+        <!-- Category selection checkboxes -->
+        <div class="category-container">
+            <p class="category-title"></p>
+            <form action="{{ url_for('filter_books') }}" method="GET">
+                <h4>Filter by Categories</h4>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="programming" name="categories" value="Programming">
+                    <label for="programming">Programming</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="web-development" name="categories" value="Web Development">
+                    <label for="web-development">Web Development</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="software-engineering" name="categories" value="Software Engineering">
+                    <label for="software-engineering">Software Engineering</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="python" name="categories" value="Python">
+                    <label for="python">Python</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="java" name="categories" value="Java">
+                    <label for="java">Java</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="xml" name="categories" value="XML">
+                    <label for="xml">XML</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="networking" name="categories" value="Networking">
+                    <label for="networking">Networking</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="open-source" name="categories" value="Open Source">
+                    <label for="open-source">Open Source</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="mobile-tech" name="categories" value="Mobile Technology">
+                    <label for="mobile-tech">Mobile Technology</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="internet" name="categories" value="Internet">
+                    <label for="internet">Internet</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="algorithmic-art" name="categories" value="Algorithmic Art">
+                    <label for="algorithmic-art">Algorithmic Art</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="client-server" name="categories" value="Client Server">
+                    <label for="client-server">Client Server</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="object-oriented-programming" name="categories" value="Object-Oriented Programming">
+                    <label for="object-oriented-programming">Object-Oriented Programming</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="miscellaneous" name="categories" value="Miscellaneous">
+                    <label for="miscellaneous">Miscellaneous</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="microsoft-dotnet" name="categories" value="Microsoft .NET">
+                    <label for="microsoft-dotnet">Microsoft .NET</label>
+                </div>
+                <button type="submit" style="margin-top: 10px; padding: 10px 15px; background-color: #007bff; color: #ffffff; border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.3s;">
+                    Filter Books
+                </button>
+            </form>
+        </div>
+
+        <!-- Books container -->
+        <div class="books-container">
+            {% for book in books %}
+            <div class="book-item">
+                <a href="{{ url_for('book_details', isbn=book.isbn) }}">
+                    <img src="{{ book.thumbnailUrl }}" alt="{{ book.title }}">
+                    <div class="book-title-overlay">{{ book.title }}</div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Contact details -->
+    <div class="contact-details">
+        <p><i class="fas fa-phone-alt"></i> Contact us at: +1 234 567 8901</p>
+        <p><i class="fas fa-envelope"></i> Email: admin@literaryescape.com</p> <!-- Change the email domain -->
+        <p><i class="fas fa-map-marker-alt"></i> Address: 123 Book St, Reading City, Bookland</p>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Literary Escape. All Rights Reserved.</p> <!-- Change footer text -->
+    </footer>
+</body>
+</html>
